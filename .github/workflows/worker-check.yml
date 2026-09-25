@@ -1,0 +1,24 @@
+name: Worker Check
+
+on:
+  push:
+    paths:
+      - "worker/**"
+      - ".github/workflows/worker-check.yml"
+  pull_request:
+    paths:
+      - "worker/**"
+      - ".github/workflows/worker-check.yml"
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: worker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm run check
