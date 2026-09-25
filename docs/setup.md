@@ -14,20 +14,22 @@ Expected categories:
 Never commit real values.
 
 ## Google Drive
-Create/reuse dated folders and upload artifacts before sending the Telegram notification.
+Google Drive is primary storage. Create/reuse dated folders and upload every artifact before reporting it as archived.
 
 ## Telegram
-Send only non-sensitive status, timestamps and Drive links.
+Telegram is notification-only for long-form videos. Reels can also be sent as actual files when their size is within the connected Telegram Bot API upload limit. The Worker must check the file size and fall back to a Drive link when the file is too large.
 
 ## Publishing
-YouTube and Instagram publishing remains human-controlled initially. The dashboard records readiness and the public URL after publishing.
+YouTube and Instagram publishing remains human-controlled initially. The dashboard records readiness and can record the public URL after publishing.
 
 ## Launch checks
 - Health endpoint works.
 - Missing/invalid auth is rejected.
 - Drive test upload works.
-- Telegram test notification works.
+- Telegram notification works.
+- Small Reel file delivery works.
+- Oversized Reel falls back to Drive link.
 - Duplicate events are idempotent.
-- Failed uploads cannot become `ready`.
+- Failed uploads do not become `ready`.
 - Secrets never appear in logs or responses.
 - Dashboard works on mobile.
