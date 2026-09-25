@@ -6,36 +6,41 @@ Suggested filename: `YYYY-MM-DD.md`
 
 ## Content cycle
 - Date:
-- Hindi topic:
-- English topic:
+- Hindi YouTube topic:
+- English YouTube topic:
 - Audience intent:
 - Research sources:
 
-## Production
-- Hook:
-- Core promise:
-- Visual plan:
-- YouTube asset:
-- Instagram asset:
-- Thumbnail/cover:
-
-## Publishing package
-- Hindi title:
-- English title:
-- Descriptions:
-- Tags/hashtags:
+## Long-form production
+- Hindi hook/script:
+- English hook/script:
+- YouTube assets:
+- Thumbnails:
 - Recommended publish times:
-- Drive folder:
+
+## Reel production
+### YouTube-related Reels
+- Hindi concept:
+- English concept:
+- Source video:
+- Hook:
+
+### Discovery / viral-test Reels
+- Hindi concept:
+- English concept:
+- Trend/format signal:
+- Hook:
+- Why it is being tested:
+
+## Delivery
+- Google Drive folders:
+- Telegram Reel delivery status:
+- Telegram notification status:
 
 ## Performance
-- YouTube views:
-- YouTube watch time:
-- YouTube subscribers gained:
-- YouTube CTR:
-- Retention notes:
-- Instagram views/reach:
-- Instagram followers gained:
-- Shares/saves/comments:
+- YouTube views/watch time/subscribers gained/CTR/retention:
+- Related Reel views/reach/follows/shares/saves:
+- Discovery Reel views/reach/follows/shares/saves:
 
 ## Learning
 - What the data supports:
