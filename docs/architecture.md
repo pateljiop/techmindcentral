@@ -1,28 +1,42 @@
 # TechMind Central Creator Bridge — Architecture
 
 ## Product goal
-Run a creator workflow for two daily long-form videos (Hindi + English), with Instagram-ready vertical derivatives, Google Drive as the primary artifact store, Telegram as notification-only, and analytics feeding the next content decision.
+Run a creator workflow for two daily long-form videos (Hindi + English), with two Instagram Reel tracks, Google Drive as the primary artifact store, Telegram as notification-only for long-form assets and a delivery channel for small Reel files, and analytics feeding the next content decision.
 
-## Pipeline
-Research → topic selection → script/package → video production → Drive archive → human publish step → analytics → next-content insights.
+## Daily content system
+Each daily cycle produces:
 
-The bridge is an orchestration layer. It must never claim an MP4 exists unless a connected production provider actually produced it.
+1. **Hindi YouTube video** — 16:9
+2. **English YouTube video** — 16:9
+3. **Hindi YouTube-related Reel** — 9:16, derived from or extending the day's Hindi YouTube topic
+4. **English YouTube-related Reel** — 9:16, derived from or extending the day's English YouTube topic
+5. **Hindi discovery/viral-test Reel** — 9:16, independently selected for shareability/discovery
+6. **English discovery/viral-test Reel** — 9:16, independently selected for shareability/discovery
+7. Thumbnail/cover assets
+8. Titles, descriptions, tags/hashtags and recommended publishing times
 
-## Content variants
-- Hindi YouTube: 16:9
-- English YouTube: 16:9
-- Hindi Instagram: 9:16
-- English Instagram: 9:16
-- Thumbnail/cover assets
-- Title, description, tags/hashtags and recommended publishing time
+The discovery/viral-test track is an experiment, not a guarantee of virality. It should use current audience signals, trends, hooks and platform-native formats without deceptive claims or artificial engagement.
 
 Hindi and English packages should be independently optimized rather than blindly translated.
 
-## Storage
-Google Drive is the source of truth. Telegram receives status notifications and Drive links; it is not video storage.
+## Storage and delivery
+Google Drive is the source of truth for all generated artifacts.
+
+Telegram has two roles:
+- Long-form YouTube files: notification only, with Drive links.
+- Instagram Reels: if a Reel file is within the Telegram Bot API's currently supported upload size, send the actual Reel file plus its Drive link. If it is larger, send the Drive link instead of pretending delivery succeeded.
+
+The bridge must verify file size before attempting a Telegram upload and record the delivery result.
+
+## Pipeline
+Research → topic selection → script/package → video production → Drive archive → Reel generation → Telegram delivery where eligible → human publish step → analytics → next-content insights.
+
+The bridge is an orchestration layer. It must never claim an MP4 exists unless a connected production provider actually produced it.
 
 ## Analytics
-Store timestamped metrics such as views, watch time, subscribers/followers gained, likes, comments, shares, saves, impressions and CTR when the platform API exposes them. Treat metrics as signals rather than guarantees.
+Track each content track separately: Hindi/English, YouTube/Instagram, and related/discovery Reel. Store timestamped views, watch time, subscribers/followers gained, likes, comments, shares, saves, impressions and CTR when exposed by connected APIs.
+
+Discovery Reels should be evaluated separately from YouTube-related Reels so their performance does not distort the strategy for long-form content.
 
 ## Security
 - Credentials live in Cloudflare Secrets.
