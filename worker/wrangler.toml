@@ -1,0 +1,6 @@
+name = "techmindcentral-creator-bridge"
+main = "src/index.js"
+compatibility_date = "2026-09-25"
+
+[vars]
+ENVIRONMENT = "production"
