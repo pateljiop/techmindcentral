@@ -4,3 +4,6 @@ compatibility_date = "2026-09-25"
 
 [vars]
 ENVIRONMENT = "production"
+
+# Set API_SECRET with: wrangler secret put API_SECRET
+# Keep provider credentials in Cloudflare Secrets.
