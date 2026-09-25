@@ -1,31 +1,54 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>TechMind Central — Creator Dashboard</title>
-  <style>
-    body{font-family:system-ui,sans-serif;margin:0;background:#0b1020;color:#eef2ff}
-    main{max-width:1100px;margin:auto;padding:32px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
-    .card{background:#151c33;border:1px solid #293452;border-radius:16px;padding:20px}
-    .muted{color:#aab4d0}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="TechMind Central creator operations dashboard">
+<title>TechMind Central — Creator Dashboard</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#080b14;color:#f5f7ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#151d35 0,#080b14 45%);min-height:100vh}
+main{width:min(1180px,calc(100% - 32px));margin:auto;padding:28px 0 56px}
+header{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:24px}.eyebrow{color:#8ea2d8;text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:700}.muted{color:#9da8c4}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:#11172a;border:1px solid #252f4a;border-radius:18px;padding:18px;box-shadow:0 10px 35px #0002}.metric{font-size:30px;margin:8px 0 0}
+.wide{margin-top:14px}.pill{padding:7px 10px;border-radius:999px;background:#1b2440;color:#cbd5f1;font-size:13px}
+.pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.step{padding:12px;border-radius:12px;background:#0d1323;border:1px solid #202a43;font-size:13px}.step b{display:block;margin-bottom:4px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.pipeline{grid-template-columns:repeat(2,1fr)}header{display:block}}
+</style>
 </head>
 <body>
 <main>
-  <h1>TechMind Central</h1>
-  <p class="muted">Creator Operations Dashboard</p>
-  <section class="grid">
-    <div class="card"><b>YouTube Views</b><h2 id="views">—</h2></div>
-    <div class="card"><b>Subscribers</b><h2 id="subs">—</h2></div>
-    <div class="card"><b>Watch Time</b><h2 id="watch">—</h2></div>
-    <div class="card"><b>Content Ready</b><h2 id="ready">—</h2></div>
-  </section>
-  <div class="card" style="margin-top:16px">
-    <h2>Daily Creator Log</h2>
-    <p class="muted">Research → production → Drive → publishing → performance → next-video insights.</p>
-  </div>
+<header>
+<div><div class="eyebrow">TechMind Central</div><h1>Creator Operations</h1><p class="muted">Two daily videos · Hindi + English · YouTube + Instagram</p></div>
+<div class="pill" id="system-status">Bridge: checking…</div>
+</header>
+<section class="grid">
+<article class="card"><span class="muted">YouTube views</span><div class="metric" id="views">—</div></article>
+<article class="card"><span class="muted">Subscribers</span><div class="metric" id="subs">—</div></article>
+<article class="card"><span class="muted">Watch time</span><div class="metric" id="watch">—</div></article>
+<article class="card"><span class="muted">Content target</span><div class="metric" id="ready">2/day</div></article>
+</section>
+<section class="card wide"><h2>Today's pipeline</h2><div class="pipeline">
+<div class="step"><b>1. Research</b><span class="muted">Topic + audience</span></div>
+<div class="step"><b>2. Create</b><span class="muted">Hindi + English</span></div>
+<div class="step"><b>3. Drive</b><span class="muted">Primary archive</span></div>
+<div class="step"><b>4. Notify</b><span class="muted">Telegram</span></div>
+<div class="step"><b>5. Publish</b><span class="muted">Human upload</span></div>
+<div class="step"><b>6. Learn</b><span class="muted">Analytics → next</span></div>
+</div></section>
+<section class="card wide"><h2>Daily creator log</h2><p class="muted">Research, production decisions, upload package, measured performance, uncertainties and the next experiment are recorded here.</p></section>
 </main>
+<script>
+const endpoint = window.BRIDGE_URL || "";
+const status = document.querySelector("#system-status");
+if (endpoint) {
+  fetch(endpoint.replace(/\/$/,"") + "/api/health")
+    .then(r => r.ok ? r.json() : Promise.reject(new Error("health failed")))
+    .then(d => { status.textContent = d.ok ? "Bridge: online" : "Bridge: issue"; })
+    .catch(() => { status.textContent = "Bridge: offline"; });
+} else {
+  status.textContent = "Bridge: not connected";
+}
+</script>
 </body>
 </html>
