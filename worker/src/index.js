@@ -159,6 +159,10 @@ export default {
             configured: Boolean(env.META_MODEL_API_KEY),
           },
           daily_video_targets: { hindi: 1, english: 1 },
+          video_generator: {
+            provider: "pixelle-video",
+            configured: Boolean(env.VIDEO_GENERATOR_URL),
+          },
         }), request, env);
       }
 
