@@ -35,6 +35,34 @@ function authorized(request, env) {
   return request.headers.get("Authorization") === `Bearer ${env.API_SECRET}`;
 }
 
+
+async function callVideoGenerator(env, path, payload = undefined) {
+  if (!env.VIDEO_GENERATOR_URL) {
+    throw new Error("video_generator_not_configured");
+  }
+
+  const base = env.VIDEO_GENERATOR_URL.replace(/\/+$/, "");
+  const headers = { "Content-Type": "application/json" };
+  if (env.VIDEO_GENERATOR_API_KEY) {
+    headers.Authorization = `Bearer ${env.VIDEO_GENERATOR_API_KEY}`;
+  }
+
+  const options = { method: payload === undefined ? "GET" : "POST", headers };
+  if (payload !== undefined) options.body = JSON.stringify(payload);
+
+  const response = await fetch(`${base}${path}`, options);
+  const textBody = await response.text();
+  let body;
+  try { body = textBody ? JSON.parse(textBody) : {}; } catch { body = { raw: textBody }; }
+
+  if (!response.ok) {
+    const error = new Error(body?.detail || body?.message || "video_generator_request_failed");
+    error.status = response.status;
+    throw error;
+  }
+  return body;
+}
+
 async function readJson(request) {
   try {
     return await request.json();
@@ -154,6 +182,58 @@ export default {
             model: env.META_MODEL_NAME || "muse-spark-1.3",
             configured: Boolean(env.META_MODEL_API_KEY),
           },
+        }), request, env);
+      }
+
+      if (request.method === "POST" && url.pathname === "/api/video/generate") {
+        const payload = await readJson(request);
+
+        if (!payload || typeof payload.text !== "string" || !payload.text.trim()) {
+          return withCors(json({
+            error: "invalid_request",
+            message: "text must be a non-empty string",
+          }, 400), request, env);
+        }
+
+        const mode = payload.mode || "generate";
+        const frameTemplate = payload.frame_template ||
+          (payload.aspect_ratio === "16:9" ? "1920x1080/image_default.html" :
+           payload.aspect_ratio === "1:1" ? "1080x1080/image_default.html" :
+           "1080x1920/image_default.html");
+
+        const result = await callVideoGenerator(env, "/api/video/generate/async", {
+          ...payload,
+          mode,
+          frame_template: frameTemplate,
+        });
+
+        return withCors(json({
+          ok: true,
+          provider: "pixelle-video",
+          result,
+        }), request, env);
+      }
+
+      if (request.method === "GET" && url.pathname.startsWith("/api/video/tasks/")) {
+        const taskId = url.pathname.slice("/api/video/tasks/".length).trim();
+        if (!taskId || !/^[A-Za-z0-9_-]+$/.test(taskId)) {
+          return withCors(json({ error: "invalid_task_id" }, 400), request, env);
+        }
+
+        const result = await callVideoGenerator(env, `/api/tasks/${taskId}`);
+        return withCors(json({
+          ok: true,
+          provider: "pixelle-video",
+          result,
+        }), request, env);
+      }
+
+      if (request.method === "GET" && url.pathname === "/api/video/health") {
+        const result = await callVideoGenerator(env, "/health");
+        return withCors(json({
+          ok: true,
+          provider: "pixelle-video",
+          result,
         }), request, env);
       }
 
