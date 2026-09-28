@@ -1,41 +1,46 @@
 # Daily Creator Logs
 
-One log per content cycle. Keep measured results separate from assumptions.
-
-Suggested filename: `YYYY-MM-DD.md`
+One log per automated content cycle. Suggested filename: `YYYY-MM-DD.md`.
 
 ## Content cycle
 - Date:
 - Hindi YouTube topic:
 - English YouTube topic:
 - Audience intent:
+- Current trend/performance signals:
 - Research sources:
 
 ## Long-form production
 - Hindi hook/script:
 - English hook/script:
+- Voice/reference status:
+- Video provider:
+- Music/SFX:
 - YouTube assets:
 - Thumbnails:
-- Recommended publish times:
+- Recommended publish windows:
 
 ## Reel production
 ### YouTube-related Reels
 - Hindi concept:
 - English concept:
-- Source video:
-- Hook:
+- Source videos:
+- Hooks:
+- Provider/export status:
 
 ### Discovery / viral-test Reels
 - Hindi concept:
 - English concept:
 - Trend/format signal:
-- Hook:
-- Why it is being tested:
+- Hooks:
+- Why tested:
+- Provider/export status:
 
 ## Delivery
-- Google Drive folders:
+- Google Drive folders/status:
 - Telegram Reel delivery status:
 - Telegram notification status:
+- Publishing status/public URLs:
 
 ## Performance
 - YouTube views/watch time/subscribers gained/CTR/retention:
