@@ -40,6 +40,9 @@ Do not put either secret in GitHub, `.env` files committed to the repository, fr
 Authenticated endpoints:
 - `GET /api/config`
 - `POST /api/muse/chat`
+- `POST /api/video/generate` — submits an async Pixelle-Video generation task
+- `GET /api/video/tasks/{task_id}` — checks Pixelle task status
+- `GET /api/video/health` — checks the video generator
 
 Public endpoints:
 - `GET /api/health`
@@ -69,8 +72,24 @@ Example body for `POST /api/muse/chat`:
 }
 ```
 
+## Pixelle-Video bridge
+The Worker can forward generation requests to the existing `pateljiop/Video-generation` API. Set `VIDEO_GENERATOR_URL` to the deployed API base URL. The bridge uses `/api/video/generate/async` and returns a task ID; poll `/api/video/tasks/{task_id}` until the task is completed. If the generator is protected by a bearer key, store it as `VIDEO_GENERATOR_API_KEY`.
+
+Example request:
+
+```json
+{
+  "text": "Explain why AI agents are becoming useful for creators.",
+  "mode": "generate",
+  "n_scenes": 5,
+  "aspect_ratio": "16:9"
+}
+```
+
+The bridge defaults to a 1080x1920 template for vertical content, 1920x1080 for 16:9, and 1080x1080 for square content when `frame_template` is not supplied.
+
 ## Daily automation
-The scheduled creator pipeline runs daily at 10:00 IST and decides the topic itself. It targets 2 YouTube videos + 4 Reels, archives artifacts to Drive when connected, sends Telegram delivery/notifications when verified, records the creator log, and uses analytics to influence the next cycle.
+The scheduled creator pipeline runs daily at 10:00 IST and decides the topic itself. It targets 2 YouTube videos + 2 derived Shorts/Reels, archives artifacts to Drive when connected, sends Telegram delivery/notifications when verified, records the creator log, and uses analytics to influence the next cycle.
 
 ## Publishing
 YouTube and Instagram publishing remains human-controlled initially. The dashboard records readiness and can record the public URL after publishing.
