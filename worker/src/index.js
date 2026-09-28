@@ -197,9 +197,9 @@ export default {
 
         const mode = payload.mode || "generate";
         const frameTemplate = payload.frame_template ||
-          (payload.aspect_ratio === "16:9" ? "1920x1080/image_default.html" :
-           payload.aspect_ratio === "1:1" ? "1080x1080/image_default.html" :
-           "1080x1920/image_default.html");
+          (payload.aspect_ratio === "16:9" ? "1920x1080/default.html" :
+           payload.aspect_ratio === "1:1" ? "1080x1080/default.html" :
+           "1080x1920/default.html");
 
         const result = await callVideoGenerator(env, "/api/video/generate/async", {
           ...payload,
