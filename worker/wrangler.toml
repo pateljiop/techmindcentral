@@ -5,6 +5,8 @@ compatibility_date = "2026-09-25"
 [vars]
 ENVIRONMENT = "production"
 META_MODEL_NAME = "muse-spark-1.3"
+# Public base URL of the deployed Pixelle-Video API (no trailing slash).
+VIDEO_GENERATOR_URL = ""
 
 # Secrets:
 # wrangler secret put API_SECRET
