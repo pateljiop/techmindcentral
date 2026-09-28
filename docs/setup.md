@@ -3,21 +3,28 @@
 ## Cloudflare
 Deploy the Worker from `worker/`. Deploy the dashboard separately as a static site if desired.
 
+## Provider roles
+- Muse/Meta: preferred video creation when the connected runtime supports generation/export.
+- Runway: backup/special-shot video generation.
+- Connected voice provider: user's voice/reference when supported.
+- Canva: thumbnails/covers when connected.
+- Metricool/Windsor/direct APIs: analytics when connected.
+- Google Drive API: primary storage.
+- Telegram Bot API: notifications and eligible Reel file delivery.
+
 ## Server-side secrets
 Expected categories:
 - Google Drive credentials
 - Telegram bot token and destination ID
 - Platform analytics credentials
-- Video/content provider credentials, if connected
+- Video/content provider credentials
+- Voice provider credentials
 - Dashboard authentication secret
 
-Never commit real values.
+Never commit real values or voice samples.
 
-## Google Drive
-Google Drive is primary storage. Create/reuse dated folders and upload every artifact before reporting it as archived.
-
-## Telegram
-Telegram is notification-only for long-form videos. Reels can also be sent as actual files when their size is within the connected Telegram Bot API upload limit. The Worker must check the file size and fall back to a Drive link when the file is too large.
+## Daily automation
+The scheduled creator pipeline runs daily at 10:00 IST and decides the topic itself. It targets 2 YouTube videos + 4 Reels, archives artifacts to Drive when connected, sends Telegram delivery/notifications when verified, records the creator log, and uses analytics to influence the next cycle.
 
 ## Publishing
 YouTube and Instagram publishing remains human-controlled initially. The dashboard records readiness and can record the public URL after publishing.
@@ -30,6 +37,6 @@ YouTube and Instagram publishing remains human-controlled initially. The dashboa
 - Small Reel file delivery works.
 - Oversized Reel falls back to Drive link.
 - Duplicate events are idempotent.
-- Failed uploads do not become `ready`.
-- Secrets never appear in logs or responses.
+- Failed uploads do not become ready.
+- Secrets and voice samples never appear in logs or responses.
 - Dashboard works on mobile.
