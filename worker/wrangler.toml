@@ -11,4 +11,5 @@ VIDEO_GENERATOR_URL = ""
 # Secrets:
 # wrangler secret put API_SECRET
 # wrangler secret put META_MODEL_API_KEY
+# Optional: wrangler secret put VIDEO_GENERATOR_API_KEY
 # Never commit provider credentials.
